@@ -129,9 +129,10 @@ lora-dinov2-peft/
     ├── rank_deficiency_analysis.png
     └── training_curves.png
 ```
-
 ## Authors
 
 - Salaj Bansal
 - Kushagra Mishra
 - Maahir Arora
+
+Course project for **MA 310**, IIT Indore under the guidance of Prof. M. Tanveer
