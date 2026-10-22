@@ -33,7 +33,8 @@ In this project, LoRA is applied to the **query and value projections** of the T
 | Architecture | Vision Transformer |
 | Dataset | Oxford-IIIT Pet |
 | Classes | 37 |
-| Training images | 3,680 |
+| Training images | 3,128 |
+| Validation images | 552 |
 | Test images | 3,669 |
 | LoRA target modules | Query and Value projections |
 | Main LoRA rank | \(r=16\) |
@@ -54,14 +55,17 @@ In this project, LoRA is applied to the **query and value projections** of the T
 
 | Metric | Full Fine-Tuning | LoRA (r=16) |
 |---|---:|---:|
-| Accuracy | 93.79% | **94.36%** |
-| Training Time | 674.33 s | **332.78 s** |
+| Validation Accuracy | 95.47% | **96.38%** |
+| Held-out Test Accuracy | 93.89% | **94.41%** |
+| Training Time | 416.99 s | **198.35 s** |
 | Epochs | 10 | 5 |
-| Peak VRAM | 2564.52 MB | **1672.56 MB** |
+| Peak VRAM | 2547.46 MB | **1644.34 MB** |
 | Trainable Parameters | 22,085,029 | **323,365** |
 | Trainable Percentage | 100.00% | **1.44%** |
 
-LoRA achieved slightly higher accuracy while training only **1.44% of the model parameters** and using substantially less peak GPU memory.
+LoRA achieved slightly higher held-out test accuracy while training only **1.44% of the model parameters** and using substantially less peak GPU memory.
+
+The original training split was divided into a stratified 85% training split (3,128 images) and 15% validation split (552 images). The validation split was used for epoch-level evaluation and best-checkpoint selection. The 3,669-image test split was kept held out and used only for final evaluation.
 
 The difference in total training time should not be interpreted as LoRA being twice as fast per epoch. Both approaches still perform the forward pass through the pretrained backbone. The total time difference is influenced by the 5 LoRA epochs versus 10 baseline epochs, in addition to the reduced gradient and optimizer-state computation for the frozen backbone.
 
@@ -73,14 +77,14 @@ The difference in total training time should not be interpreted as LoRA being tw
 
 The effect of LoRA rank was evaluated for $r \in \{4,8,16\}$.
 
-| Rank | Trainable Parameters | Accuracy |
-|---:|---:|---:|
-| 4 | 102,181 | **94.63%** |
-| 8 | 175,909 | 94.60% |
-| 16 | 323,365 | 94.36% |
-| Full Fine-Tuning | 22,085,029 | 93.79% |
+| Rank | Trainable Parameters | Validation Accuracy | Held-out Test Accuracy |
+|---:|---:|---:|---:|
+| 4 | 102,181 | 95.47% | **94.79%** |
+| 8 | 175,909 | 95.65% | 94.66% |
+| 16 | 323,365 | **96.38%** | 94.41% |
+| Full Fine-Tuning | 22,085,029 | 95.47% | 93.89% |
 
-A very low rank was sufficient for this task. The \(r=4\) configuration achieved the highest accuracy while using only 102,181 trainable parameters.
+A very low rank was sufficient for this task. The \(r=4\) configuration achieved the highest held-out test accuracy while using only 102,181 trainable parameters; rank 16 achieved the highest validation accuracy in this run.
 
 ## Rank-Deficiency Analysis
 
@@ -122,7 +126,7 @@ lora-dinov2-peft/
 ├── README.md
 ├── requirements.txt
 ├── .gitignore
-├── lora_dinov2_oxford_pet.ipynb
+├── parameter_efficient_finetuning_lora.ipynb
 └── figures/
     ├── confusion_matrix_baseline_dinov2.png
     ├── confusion_matrix_lora_dinov2.png
