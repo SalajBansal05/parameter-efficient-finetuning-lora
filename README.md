@@ -37,15 +37,15 @@ In this project, LoRA is applied to the **query and value projections** of the T
 | Validation images | 552 |
 | Test images | 3,669 |
 | LoRA target modules | Query and Value projections |
-| Main LoRA rank | \(r=16\) |
-| LoRA \(\alpha\) | 32 |
+| Main LoRA rank | $r=16$ |
+| LoRA $\alpha$ | 32 |
 | LoRA dropout | 0.1 |
 | Batch size | 32 |
 | LoRA epochs | 5 |
 | Full FT epochs | 10 |
-| LoRA learning rate | \(10^{-3}\) |
-| Full FT backbone LR | \(2\times10^{-5}\) |
-| Full FT classifier LR | \(10^{-3}\) |
+| LoRA learning rate | $10^{-3}$ |
+| Full FT backbone LR | $2\times10^{-5}$ |
+| Full FT classifier LR | $10^{-3}$ |
 | Scheduler | Cosine decay |
 | Warmup | 10% |
 | Weight decay | 0.01 |
@@ -75,7 +75,7 @@ The difference in total training time should not be interpreted as LoRA being tw
 
 ## Rank Ablation
 
-The effect of LoRA rank was evaluated for $r \in \{4,8,16\}$.
+The effect of LoRA rank was evaluated for $r \in \lbrace4,8,16\rbrace$.
 
 | Rank | Trainable Parameters | Validation Accuracy | Held-out Test Accuracy |
 |---:|---:|---:|---:|
@@ -84,7 +84,7 @@ The effect of LoRA rank was evaluated for $r \in \{4,8,16\}$.
 | 16 | 323,365 | **96.38%** | 94.41% |
 | Full Fine-Tuning | 22,085,029 | 95.47% | 93.89% |
 
-A very low rank was sufficient for this task. The \(r=4\) configuration achieved the highest held-out test accuracy while using only 102,181 trainable parameters; rank 16 achieved the highest validation accuracy in this run.
+A very low rank was sufficient for this task. The $r=4$ configuration achieved the highest held-out test accuracy while using only 102,181 trainable parameters; rank 16 achieved the highest validation accuracy in this run.
 
 ## Rank-Deficiency Analysis
 
